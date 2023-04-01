@@ -32,12 +32,16 @@ public class DragonController : MonoBehaviour
             light.pointLightOuterRadius = Vector2.Distance(transform.position, projectail.position);
         } else
         {
-            if (light.pointLightOuterRadius > 0)
+            if (light != null)
             {
-                light.pointLightOuterRadius -= Time.deltaTime * speedLight; 
-            } else
-            {
-                light.pointLightOuterRadius = 0;
+                if (light.pointLightOuterRadius > 0)
+                {
+                    light.pointLightOuterRadius -= Time.deltaTime * speedLight;
+                }
+                else
+                {
+                    light.pointLightOuterRadius = 0;
+                }
             }
             
         }
