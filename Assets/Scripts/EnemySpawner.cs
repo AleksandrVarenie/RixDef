@@ -6,61 +6,76 @@ public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public Transform target;
-    public float spawnRadius;
     public float spawnDelay;
+    public float spawnRadius;
     public float minSpeed;
     public float maxSpeed;
-    public int waveSize;
-    public float waveDelay;
+    public float initialWaveDelay;
+    public int enemiesPerWave;
 
-    private int enemiesRemainingInWave;
-    private float nextSpawnTime;
+    public float timeBetweenWaves; // затримка між хвилями
+
+    private float spawnTimer;
+    private float waveTimer;
+    private int enemiesRemaining;
 
     void Start()
     {
-        enemiesRemainingInWave = waveSize;
-        nextSpawnTime = Time.time + spawnDelay;
+        waveTimer = initialWaveDelay;
+        enemiesRemaining = 0;
     }
 
     void Update()
     {
-        if (enemiesRemainingInWave > 0 && Time.time > nextSpawnTime)
+        if (enemiesRemaining == 0)
         {
-            GameObject enemy = Instantiate(enemyPrefab, GetRandomSpawnPosition(), Quaternion.identity);
-            EnemyController enemyController = enemy.GetComponent<EnemyController>();
-            if (enemyController != null)
-            {
-                enemyController.target = target;
-                enemyController.speed = Random.Range(minSpeed, maxSpeed);
-            }
-            enemiesRemainingInWave--;
-            nextSpawnTime = Time.time + spawnDelay;
-        }
+            waveTimer -= Time.deltaTime;
 
-        if (enemiesRemainingInWave == 0)
-        {
-            if (GameObject.FindWithTag("Enemy") == null)
+            if (waveTimer <= 0)
             {
-                enemiesRemainingInWave = waveSize;
-                StartCoroutine(WaveDelay());
+                StartWave();
+                waveTimer = timeBetweenWaves;
             }
         }
-        Debug.Log(enemiesRemainingInWave);
+        else
+        {
+            spawnTimer -= Time.deltaTime;
+
+            if (spawnTimer <= 0)
+            {
+                SpawnEnemy();
+                spawnTimer = spawnDelay;
+
+                enemiesRemaining--;
+
+                if (enemiesRemaining == 0)
+                {
+                    waveTimer = timeBetweenWaves;
+                }
+            }
+        }
     }
 
-    private Vector3 GetRandomSpawnPosition()
+    void StartWave()
     {
-        Vector2 randomPosition = Random.insideUnitCircle * spawnRadius;
-        return transform.position + new Vector3(randomPosition.x, randomPosition.y, 0);
+        enemiesRemaining = enemiesPerWave;
+        spawnTimer = 0;
     }
 
-    IEnumerator WaveDelay()
+    void SpawnEnemy()
     {
-        yield return new WaitForSeconds(waveDelay);
-    }
+        float spawnAngle = Random.Range(0f, Mathf.PI * 2f);
+        Vector3 spawnPosition = new Vector3(Mathf.Sin(spawnAngle), Mathf.Cos(spawnAngle), 0f) * spawnRadius;
+        spawnPosition += transform.position;
 
-    public void EnemyDestroyed()
-    {
-        enemiesRemainingInWave++;
+        GameObject enemyObject = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+
+        float enemySpeed = Random.Range(minSpeed, maxSpeed);
+        EnemyController enemyMovement = enemyObject.GetComponent<EnemyController>();
+        if (enemyMovement != null)
+        {
+            enemyMovement.target = (target);
+            enemyMovement.speed = (enemySpeed);
+        }
     }
 }

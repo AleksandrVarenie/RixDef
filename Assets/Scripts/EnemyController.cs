@@ -26,17 +26,18 @@ public class EnemyController : MonoBehaviour
         if (currentHealth <= 0)
         {
             Debug.Log("do");
-            OnDestroy();
+            Destroy(gameObject);
+
+            //   OnDestroy();
         }
     }
-
+/*
     private void OnDestroy()
     {
         EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
         if (enemySpawner != null)
         {
             enemySpawner.EnemyDestroyed();
-            Destroy(gameObject);
         }
-    }
+    }*/
 }

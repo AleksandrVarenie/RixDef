@@ -1,16 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class DragonController : MonoBehaviour
 {
     public GameObject fireballPrefab;
     public float fireballSpeed = 10f;
     public float fireballCooldown = 0.5f;
-    public float fireballDuration = 2f;
- 
+
+    public float speedLight = 2f;
+
+    public GameObject LightPrefab;
+
 
     private bool canShoot = true;
+
+    private Transform projectail;
+
+    private Light2D light;
 
     void Update()
     {
@@ -18,6 +26,20 @@ public class DragonController : MonoBehaviour
         {
             ShootFireball();
             StartCoroutine(StartFireballCooldown());
+        }
+        if (projectail!= null)
+        {
+            light.pointLightOuterRadius = Vector2.Distance(transform.position, projectail.position);
+        } else
+        {
+            if (light.pointLightOuterRadius > 0)
+            {
+                light.pointLightOuterRadius -= Time.deltaTime * speedLight; 
+            } else
+            {
+                light.pointLightOuterRadius = 0;
+            }
+            
         }
     }
 
@@ -32,7 +54,11 @@ public class DragonController : MonoBehaviour
 
         GameObject fireball = Instantiate(fireballPrefab, transform.position, rotation);
         fireball.GetComponent<Rigidbody2D>().velocity = direction * fireballSpeed;
-        Destroy(fireball, fireballDuration);
+        fireball.GetComponent<FireBall>().owner = gameObject;
+        projectail = fireball.transform;
+        GameObject lightHolder = Instantiate(LightPrefab, transform.position, rotation);
+        light = lightHolder.transform.GetChild(0).GetComponent<Light2D>();
+        //   Destroy(fireball, fireballDuration);
     }
     IEnumerator StartFireballCooldown()
     {
