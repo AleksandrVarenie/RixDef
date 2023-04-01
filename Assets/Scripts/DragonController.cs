@@ -29,7 +29,7 @@ public class DragonController : MonoBehaviour
         }
         if (projectail!= null)
         {
-            light.pointLightOuterRadius = Vector2.Distance(transform.position, projectail.position);
+            light.pointLightOuterRadius = Vector2.Distance(transform.position, projectail.position) * 2;
         } else
         {
             if (light != null)
