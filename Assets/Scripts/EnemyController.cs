@@ -63,7 +63,7 @@ public class EnemyController : MonoBehaviour
                     coinVisibled();
                     if (player != null)
                     {
-                        player.TakeDamage(10);
+                        player.TakeDamage(100);
                     }
                 }
             }

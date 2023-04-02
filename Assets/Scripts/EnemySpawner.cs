@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -14,11 +16,15 @@ public class EnemySpawner : MonoBehaviour
     public float timeBetweenWaves;
     public float timeBetweenSpawns; // час між спавнами ворогів у хвилі
 
+    public TextMeshProUGUI text;
+
     private float waveTimer;
     private int enemiesRemaining;
     public int liveEnemiesCount; // лічильник живих противників
     private Transform[] spawnPoints;
 
+    private int waveTime = 0;
+    
     void Start()
     {
         GameObject[] spawnPointObjects = GameObject.FindGameObjectsWithTag("SpawnPoint");
@@ -31,6 +37,7 @@ public class EnemySpawner : MonoBehaviour
         waveTimer = initialWaveDelay;
         enemiesRemaining = 0;
         liveEnemiesCount = 0; // ініціалізуємо лічильник живих противників
+        text.SetText(waveTime.ToString());
     }
 
     void Update()
@@ -45,10 +52,14 @@ public class EnemySpawner : MonoBehaviour
                 waveTimer = timeBetweenWaves;
             }
         }
+        Debug.Log(waveTime);
     }
 
     void StartWave()
     {
+
+        waveTime++;
+        enemiesPerWave += 2;
         enemiesRemaining = enemiesPerWave;
         StartCoroutine(SpawnEnemies()); // запускаємо корутину SpawnEnemies()
     }
@@ -59,6 +70,7 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnEnemy();
             enemiesRemaining--;
+            text.SetText(waveTime.ToString());
             yield return new WaitForSeconds(timeBetweenSpawns); // чекаємо деякий час перед спавном наступного ворога
         }
     }
