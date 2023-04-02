@@ -12,9 +12,10 @@ public class DragonController : MonoBehaviour
     public float speedLight = 2f;
 
     public GameObject LightPrefab;
+    public List<GameObject> FirePower;
 
     public float powerIncreaseInterval = 0.5f; // інтервал збільшення накопичення
-    public int maxPower = 2; // максимальне значення накопичення
+    public int maxPower = 3; // максимальне значення накопичення
     private int power = 0; // поточне значення накопичення
     private float powerTimer = 0f; // таймер для збільшення накопичення
 
@@ -31,18 +32,19 @@ public class DragonController : MonoBehaviour
 
     void Update()
     {
-        if (canShoot && Input.GetMouseButton(0))
+        if (canShoot && Input.GetMouseButton(0) && projectail == null && power != 0)
         {
             ShootFireball();
             StartCoroutine(StartFireballCooldown());
         }
-        if (power < maxPower)
+        if (power < maxPower && projectail == null)
         {
             powerTimer += Time.deltaTime;
             if (powerTimer >= powerIncreaseInterval)
             {
                 power++;
                 powerTimer = 0f;
+                FirePower[power].SetActive(true);
             }
         }
         Debug.Log(power);
@@ -64,7 +66,7 @@ public class DragonController : MonoBehaviour
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         GameObject fireball = Instantiate(fireballPrefab, transform.position, rotation);
-        float currentSpeed = fireballSpeed + (power*0.5f); // збільшуємо швидкість в залежності від накопичення сили
+        float currentSpeed = fireballSpeed + (power*0.25f); // збільшуємо швидкість в залежності від накопичення сили
         fireball.GetComponent<Rigidbody2D>().velocity = direction * currentSpeed;
         fireball.GetComponent<FireBall>().owner = gameObject;
         GameObject lightHolder = Instantiate(LightPrefab, transform.position, rotation);

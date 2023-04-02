@@ -17,7 +17,6 @@ public class DistanceCalculator : MonoBehaviour
         foreach (GameObject enemy in enemies)
         {
             float distance = Vector3.Distance(player.position, enemy.transform.position);
-            Debug.Log("Distance to enemy: " + distance);
 
             // знаходимо компонент AudioSource на об'єкті ворога
             AudioSource audioSource = enemy.GetComponent<AudioSource>();

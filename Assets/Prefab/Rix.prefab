@@ -1795,6 +1795,7 @@ GameObject:
   - component: {fileID: 4480162029105928582}
   - component: {fileID: 8095560914713424735}
   - component: {fileID: 6838290043776742441}
+  - component: {fileID: 292644486382398161}
   - component: {fileID: 3033627091134899471}
   - component: {fileID: 431473347285477968}
   - component: {fileID: 626127612}
@@ -1993,6 +1994,19 @@ MonoBehaviour:
   player: {fileID: 7809768574064422174}
   maxVolumeDistance: 10
   minVolumeDistance: 1
+--- !u!114 &292644486382398161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8412857853972894737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0664621a595840f47aa35f198216e3ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1000
 --- !u!114 &3033627091134899471
 MonoBehaviour:
   m_ObjectHideFlags: 0
