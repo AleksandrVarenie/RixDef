@@ -59,7 +59,7 @@ public class EnemySpawner : MonoBehaviour
     {
 
         waveTime++;
-        enemiesPerWave += 2;
+        enemiesPerWave += 4;
         enemiesRemaining = enemiesPerWave;
         StartCoroutine(SpawnEnemies()); // запускаємо корутину SpawnEnemies()
     }

@@ -88,7 +88,7 @@ public class EnemyController : MonoBehaviour
         {
             if (haveCoin)
             {
-                player.TakeDamage(-10);
+                player.TakeDamage(-100);
                 Debug.Log("FireInBack");
             }
             if (OnDeath != null)
