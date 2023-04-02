@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1513833658}
+  - component: {fileID: 2788228014232256189}
   - component: {fileID: 1513833659}
   m_Layer: 0
   m_Name: Rix
@@ -17,21 +17,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1513833658
-Transform:
+--- !u!224 &2788228014232256189
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1513833657}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.28, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7809768574064422174}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -1.28, y: 0}
+  m_SizeDelta: {x: 2.16, y: 2.16}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &1513833659
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1813,7 +1818,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3162675453271884897}
-  - {fileID: 1513833658}
+  - {fileID: 2788228014232256189}
   - {fileID: 354543842209752379}
   - {fileID: 354543842096921377}
   - {fileID: 1535543437}
@@ -1849,10 +1854,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireballPrefab: {fileID: 7822922842510272213, guid: be53fe05200617945b5bbb8cdab370f9, type: 3}
+  firePrefab: []
   fireballSpeed: 2
   fireballCooldown: 1
   speedLight: 25
   LightPrefab: {fileID: 543463810805342630, guid: c710ff04a766ce74295274409997a321, type: 3}
+  powerIncreaseInterval: 0.5
+  maxPower: 2
 --- !u!50 &4480162029105928582
 Rigidbody2D:
   serializedVersion: 4
