@@ -41,7 +41,7 @@ public class FireBall : MonoBehaviour
             currentSize = maxSize;
         }
 
-        transform.localScale = new Vector3(0.5f, currentSize, currentSize); //currentSize, currentSize);
+        transform.localScale = new Vector3(1f, currentSize*2f, currentSize*2f); //currentSize, currentSize);
 
         if (age >= lifetime)
         {

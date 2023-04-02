@@ -76,6 +76,11 @@ public class DragonController : MonoBehaviour
         GameObject fireHolder = Instantiate(firePrefab[power], transform.position, rotation);
         fireHolder.GetComponent<Fire>().projectail = fireball.transform;
         power = 0; // скидаємо накопичення сили до нуля
+        for (int i = 0; i < 4; i++)
+        {
+            if (FirePower[i] != null)
+            FirePower[i].SetActive(false);
+        }
         // Destroy(fireball, fireballDuration);
     }
     IEnumerator StartFireballCooldown()
