@@ -29,7 +29,7 @@ public class SoundMixer : MonoBehaviour
     void Update()
     {
         // if (isPlayingBreakMusic && enemySpawner.liveEnemiesCount >= enemySpawner.enemiesPerWave * musicThreshold)
-        if (isPlayingBreakMusic && 5f >= enemySpawner.enemiesPerWave)
+        if (isPlayingBreakMusic || currentClip == lowEnemiesMusic && enemySpawner.liveEnemiesCount > 5)
         {
             isPlayingBreakMusic = false;
             currentClip = highEnemiesMusic;
@@ -37,7 +37,7 @@ public class SoundMixer : MonoBehaviour
             fadeSpeed = targetVolume / fadeDuration;
         }
 
-        if (currentClip == highEnemiesMusic && 5f < enemySpawner.enemiesPerWave * musicThreshold)
+        if (currentClip == highEnemiesMusic || currentClip == breakMusic && enemySpawner.liveEnemiesCount > 0)
         {
             currentClip = lowEnemiesMusic;
             targetVolume = audioSource.volume;

@@ -53,15 +53,15 @@ public class EnemySpawner : MonoBehaviour
                 waveTimer = timeBetweenWaves;
             }
         }
+        if (waveTime == 5)
+        {
+            SceneManager.LoadScene(3);
+        }
         Debug.Log(waveTime);
     }
 
     void StartWave()
     {
-        if (waveTime == 6)
-        {
-            SceneManager.LoadScene(3);
-        }
         waveTime++;
         enemiesPerWave += 4;
         enemiesRemaining = enemiesPerWave;
