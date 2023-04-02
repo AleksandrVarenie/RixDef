@@ -18,9 +18,18 @@ public class EnemySpawner : MonoBehaviour
     private float spawnTimer;
     private float waveTimer;
     private int enemiesRemaining;
+    private Transform[] spawnPoints; // список точок спавну
 
     void Start()
     {
+        // Знаходимо всі пусті об'єкти з тегом "SpawnPoint" і додаємо їх в список
+        GameObject[] spawnPointObjects = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        spawnPoints = new Transform[spawnPointObjects.Length];
+        for (int i = 0; i < spawnPointObjects.Length; i++)
+        {
+            spawnPoints[i] = spawnPointObjects[i].transform;
+        }
+
         waveTimer = initialWaveDelay;
         enemiesRemaining = 0;
     }
@@ -64,9 +73,9 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemy()
     {
-        float spawnAngle = Random.Range(0f, Mathf.PI * 2f);
-        Vector3 spawnPosition = new Vector3(Mathf.Sin(spawnAngle), Mathf.Cos(spawnAngle), 0f) * spawnRadius;
-        spawnPosition += transform.position;
+        // Вибираємо випадкову точку спавну зі списку
+        int spawnIndex = Random.Range(0, spawnPoints.Length);
+        Vector3 spawnPosition = spawnPoints[spawnIndex].position;
 
         GameObject enemyObject = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 

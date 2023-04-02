@@ -7,6 +7,8 @@ public class FireBall : MonoBehaviour
     public GameObject owner;
     public float fireballDamage = 10f;
 
+    public GameObject Light;
+
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other);
@@ -43,6 +45,7 @@ public class FireBall : MonoBehaviour
 
         if (age >= lifetime)
         {
+           // Light.GetComponent<FireBallLight>().fireBallDead = true;
             Destroy(gameObject);
         }
     }
