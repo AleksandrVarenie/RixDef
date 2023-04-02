@@ -6,23 +6,21 @@ public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public Transform target;
-    public float spawnDelay;
     public float spawnRadius;
     public float minSpeed;
     public float maxSpeed;
     public float initialWaveDelay;
     public int enemiesPerWave;
+    public float timeBetweenWaves;
+    public float timeBetweenSpawns; // час між спавнами ворогів у хвилі
 
-    public float timeBetweenWaves; // затримка між хвилями
-
-    private float spawnTimer;
     private float waveTimer;
     private int enemiesRemaining;
-    private Transform[] spawnPoints; // список точок спавну
+    public int liveEnemiesCount; // лічильник живих противників
+    private Transform[] spawnPoints;
 
     void Start()
     {
-        // Знаходимо всі пусті об'єкти з тегом "SpawnPoint" і додаємо їх в список
         GameObject[] spawnPointObjects = GameObject.FindGameObjectsWithTag("SpawnPoint");
         spawnPoints = new Transform[spawnPointObjects.Length];
         for (int i = 0; i < spawnPointObjects.Length; i++)
@@ -32,11 +30,12 @@ public class EnemySpawner : MonoBehaviour
 
         waveTimer = initialWaveDelay;
         enemiesRemaining = 0;
+        liveEnemiesCount = 0; // ініціалізуємо лічильник живих противників
     }
 
     void Update()
     {
-        if (enemiesRemaining == 0)
+        if (enemiesRemaining == 0 && liveEnemiesCount == 0) // зупиняємо хвилю, коли всі противники вбиті
         {
             waveTimer -= Time.deltaTime;
 
@@ -46,45 +45,42 @@ public class EnemySpawner : MonoBehaviour
                 waveTimer = timeBetweenWaves;
             }
         }
-        else
-        {
-            spawnTimer -= Time.deltaTime;
-
-            if (spawnTimer <= 0)
-            {
-                SpawnEnemy();
-                spawnTimer = spawnDelay;
-
-                enemiesRemaining--;
-
-                if (enemiesRemaining == 0)
-                {
-                    waveTimer = timeBetweenWaves;
-                }
-            }
-        }
     }
 
     void StartWave()
     {
         enemiesRemaining = enemiesPerWave;
-        spawnTimer = 0;
+        StartCoroutine(SpawnEnemies()); // запускаємо корутину SpawnEnemies()
+    }
+
+    IEnumerator SpawnEnemies()
+    {
+        while (enemiesRemaining > 0)
+        {
+            SpawnEnemy();
+            enemiesRemaining--;
+            yield return new WaitForSeconds(timeBetweenSpawns); // чекаємо деякий час перед спавном наступного ворога
+        }
     }
 
     void SpawnEnemy()
     {
-        // Вибираємо випадкову точку спавну зі списку
         int spawnIndex = Random.Range(0, spawnPoints.Length);
         Vector3 spawnPosition = spawnPoints[spawnIndex].position;
 
         GameObject enemyObject = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-
-        float enemySpeed = Random.Range(minSpeed, maxSpeed);
         EnemyController enemyMovement = enemyObject.GetComponent<EnemyController>();
         if (enemyMovement != null)
         {
-            enemyMovement.target = (target);
-            enemyMovement.speed = (enemySpeed);
+            enemyMovement.target = target;
+            enemyMovement.speed = Random.Range(minSpeed, maxSpeed);
+            enemyMovement.OnDeath += OnEnemyDeath; // підпис
+            liveEnemiesCount++; // збільшуємо лічильник живих противників
         }
+    }
+
+    void OnEnemyDeath()
+    {
+        liveEnemiesCount--; // зменшуємо лічильник живих противників, коли противник помирає
     }
 }

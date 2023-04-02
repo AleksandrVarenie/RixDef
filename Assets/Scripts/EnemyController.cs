@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+
+    // Оголошуємо подію на смерть противника
+    public event System.Action OnDeath;
+
     public Transform target;
     public float speed;
     public float currentHealth = 1;
 
     private bool isWaiting = false;
-    private float waitTime = 3f;
+    private float waitTime = 1f;
     private float waitTimer = 0f;
 
     void Update()
@@ -35,7 +39,7 @@ public class EnemyController : MonoBehaviour
                 if (waitTimer <= 0f)
                 {
                     isWaiting = false;
-                    speed *= -1f;
+                    speed *= -1f * 2f;
                 }
             }
         }
@@ -46,9 +50,16 @@ public class EnemyController : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
+            if (OnDeath != null)
+            {
+                // Викликаємо всі методи, які підписалися на подію
+                OnDeath();
+            }
             Destroy(gameObject);
         }
     }
+
+
 
     private void OnBecameInvisible()
     {
